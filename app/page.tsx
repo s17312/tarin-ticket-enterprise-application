@@ -20,11 +20,11 @@ const cards = [
         <circle cx="62" cy="18" r="4" fill="#2563eb" />
         <circle cx="106" cy="32" r="5" fill="#f43f5e" />
         <circle cx="28" cy="74" r="3.5" fill="#1e293b" />
-        
+
         {/* Slanted red box "BOOK" */}
         <path d="M12 25 L98 12 L92 50 L6 63 Z" fill="#e11d48" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="52" y="43" transform="rotate(-8 52 43)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">BOOK</text>
-        
+
         {/* Slanted blue box "NOW!" */}
         <path d="M22 86 L108 73 L102 36 L16 49 Z" fill="#2563eb" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="62" y="69" transform="rotate(-8 62 69)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">NOW!</text>
@@ -45,11 +45,11 @@ const cards = [
         <circle cx="62" cy="18" r="4" fill="#7c3aed" />
         <circle cx="106" cy="32" r="5" fill="#e11d48" />
         <circle cx="28" cy="74" r="3.5" fill="#1e293b" />
-        
+
         {/* Slanted violet box "VIEW" */}
         <path d="M12 25 L98 12 L92 50 L6 63 Z" fill="#7c3aed" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="52" y="43" transform="rotate(-8 52 43)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">VIEW</text>
-        
+
         {/* Slanted fuchsia box "LIST!" */}
         <path d="M22 86 L108 73 L102 36 L16 49 Z" fill="#db2777" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="62" y="69" transform="rotate(-8 62 69)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">LIST!</text>
@@ -70,11 +70,11 @@ const cards = [
         <circle cx="62" cy="18" r="4" fill="#059669" />
         <circle cx="106" cy="32" r="5" fill="#f59e0b" />
         <circle cx="28" cy="74" r="3.5" fill="#1e293b" />
-        
+
         {/* Slanted emerald box "WEEK" */}
         <path d="M12 25 L98 12 L92 50 L6 63 Z" fill="#059669" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="52" y="43" transform="rotate(-8 52 43)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">WEEK</text>
-        
+
         {/* Slanted indigo box "DATA!" */}
         <path d="M22 86 L108 73 L102 36 L16 49 Z" fill="#4f46e5" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="62" y="69" transform="rotate(-8 62 69)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">DATA!</text>
@@ -95,11 +95,11 @@ const cards = [
         <circle cx="62" cy="18" r="4" fill="#d97706" />
         <circle cx="106" cy="32" r="5" fill="#06b6d4" />
         <circle cx="28" cy="74" r="3.5" fill="#1e293b" />
-        
+
         {/* Slanted amber box "PRE" */}
         <path d="M12 25 L98 12 L92 50 L6 63 Z" fill="#d97706" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="52" y="43" transform="rotate(-8 52 43)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">PRE</text>
-        
+
         {/* Slanted magenta box "DICT!" */}
         <path d="M22 86 L108 73 L102 36 L16 49 Z" fill="#c026d3" stroke="#1e293b" strokeWidth="2.5" strokeLinejoin="miter" />
         <text x="62" y="69" transform="rotate(-8 62 69)" fontFamily="Impact, Arial Black, sans-serif" fontSize="22" fill="white">DICT!</text>
@@ -124,10 +124,10 @@ export default function Home() {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-2 text-violet-900">Train Ticket Reservation &amp; Management</h1>
-      <p className="text-slate-600 mb-6">
+      {/* <p className="text-slate-600 mb-6">
         This client is a Next.js SPA that calls two independent ASP.NET Core Web API microservices - Booking Service (SQL Server via EF Core)
         and Analytics &amp; Prediction Service (XML cache, background-refreshed) - entirely over REST/JSON. It never connects to a database directly.
-      </p>
+      </p> */}
       <div className="grid md:grid-cols-2 gap-6">
         {cards.map((c) => (
           <Link
