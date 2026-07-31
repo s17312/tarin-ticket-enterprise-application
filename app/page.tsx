@@ -124,10 +124,6 @@ export default function Home() {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-2 text-violet-900">Train Ticket Reservation &amp; Management</h1>
-      {/* <p className="text-slate-600 mb-6">
-        This client is a Next.js SPA that calls two independent ASP.NET Core Web API microservices - Booking Service (SQL Server via EF Core)
-        and Analytics &amp; Prediction Service (XML cache, background-refreshed) - entirely over REST/JSON. It never connects to a database directly.
-      </p> */}
       <div className="grid md:grid-cols-2 gap-6">
         {cards.map((c) => (
           <Link
