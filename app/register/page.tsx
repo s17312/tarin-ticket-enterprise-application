@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 export default function RegisterPage() {
   const { register } = useAuth();
+  const { toast } = useToast();
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,10 +21,37 @@ export default function RegisterPage() {
     setBusy(true);
     setError(null);
     try {
-      await register(email, password, fullName);
+      const nameTrimmed = fullName.trim();
+      if (!nameTrimmed) {
+        throw new Error("Full name is required.");
+      }
+      if (nameTrimmed.length < 2) {
+        throw new Error("Full name must be at least 2 characters long.");
+      }
+
+      const emailTrimmed = email.trim();
+      if (!emailTrimmed) {
+        throw new Error("Email address is required.");
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailTrimmed)) {
+        throw new Error("Please enter a valid email address.");
+      }
+
+      if (!password) {
+        throw new Error("Password is required.");
+      }
+      if (password.length < 6) {
+        throw new Error("Password must be at least 6 characters long.");
+      }
+
+      await register(emailTrimmed, password, nameTrimmed);
+      toast("Account registered successfully!", "success");
       router.push("/bookings");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      const errMsg = err instanceof Error ? err.message : "Registration failed";
+      setError(errMsg);
+      toast(errMsg, "error");
     } finally {
       setBusy(false);
     }

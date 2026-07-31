@@ -5,13 +5,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { bookingApi, RouteDto, SEAT_CLASS_LABELS, SPECIAL_REQUEST_LABELS } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const DAY_VALUES = [1, 2, 3, 4, 5, 6, 0]; // .NET DayOfWeek: Sunday=0..Saturday=6
 
 export default function NewBookingPage() {
   const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, openAuthModal, isAuthModalOpen } = useAuth();
+  const { toast } = useToast();
+  const [hasOpenedModal, setHasOpenedModal] = useState(false);
   const [routes, setRoutes] = useState<RouteDto[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -31,6 +34,19 @@ export default function NewBookingPage() {
   const [specialRequestDetails, setSpecialRequestDetails] = useState<string[]>(["", "", "", ""]);
 
   useEffect(() => {
+    if (!authLoading && !user && !hasOpenedModal) {
+      setHasOpenedModal(true);
+      openAuthModal("login");
+    }
+  }, [authLoading, user, openAuthModal, hasOpenedModal]);
+
+  useEffect(() => {
+    if (!authLoading && !user && hasOpenedModal && !isAuthModalOpen) {
+      router.push("/bookings");
+    }
+  }, [authLoading, user, hasOpenedModal, isAuthModalOpen, router]);
+
+  useEffect(() => {
     bookingApi.routes().then(setRoutes);
   }, []);
 
@@ -44,6 +60,44 @@ export default function NewBookingPage() {
     setErrors([]);
 
     try {
+      // Client-side validations
+      if (!routeId) {
+        throw new Error("Please select a route.");
+      }
+
+      const todayStr = new Date().toISOString().split("T")[0];
+      if (travelDate < todayStr) {
+        throw new Error("Travel date cannot be in the past.");
+      }
+
+      if (departureTime && arrivalTime && departureTime >= arrivalTime) {
+        throw new Error("Arrival time must be after the departure time.");
+      }
+
+      if (!seatNumber.trim()) {
+        throw new Error("Seat number is required.");
+      }
+
+      const fare = Number(farePrice);
+      if (isNaN(fare) || fare <= 0) {
+        throw new Error("Fare price must be greater than £0.00.");
+      }
+
+      if (isRecurring) {
+        if (recurrenceDays.length === 0) {
+          throw new Error("Please select at least one recurrence day for a recurring booking.");
+        }
+        if (recurrenceEndDate && recurrenceEndDate <= travelDate) {
+          throw new Error("Recurrence end date must be after the initial travel date.");
+        }
+        if (recurrenceOccurrences) {
+          const occurrences = Number(recurrenceOccurrences);
+          if (isNaN(occurrences) || occurrences < 1 || occurrences > 52) {
+            throw new Error("Recurrence occurrences must be between 1 and 52.");
+          }
+        }
+      }
+
       const response = await bookingApi.create({
         travelDate,
         routeId: Number(routeId),
@@ -63,26 +117,28 @@ export default function NewBookingPage() {
 
       if (!response.success) {
         setErrors(response.errors.map((e) => `${e.field}: ${e.message}`));
+        response.errors.forEach((e) => {
+          toast(e.message, "error");
+        });
         setSubmitting(false);
         return;
       }
 
+      toast("Booking created successfully!", "success");
       router.push(`/bookings/${response.createdBookings[0].id}`);
     } catch (err) {
-      setErrors([String(err)]);
+      const msg = err instanceof Error ? err.message : String(err);
+      setErrors([msg]);
+      toast(msg, "error");
       setSubmitting(false);
     }
   }
 
-  if (authLoading) return <p>Loading...</p>;
-
-  if (!user) {
+  if (authLoading || !user) {
     return (
-      <div>
-        <p className="mb-3">You need to be logged in to add a booking.</p>
-        <Link href="/login" className="text-violet-700 hover:underline">
-          Log in
-        </Link>
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-700 mb-4"></div>
+        <p className="text-slate-600">Please sign in to proceed with booking.</p>
       </div>
     );
   }

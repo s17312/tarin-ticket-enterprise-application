@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const { toast } = useToast();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,10 +20,29 @@ export default function LoginPage() {
     setBusy(true);
     setError(null);
     try {
-      await login(email, password);
+      const emailTrimmed = email.trim();
+      if (!emailTrimmed) {
+        throw new Error("Email address is required.");
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailTrimmed)) {
+        throw new Error("Please enter a valid email address.");
+      }
+
+      if (!password) {
+        throw new Error("Password is required.");
+      }
+      if (password.length < 6) {
+        throw new Error("Password must be at least 6 characters long.");
+      }
+
+      await login(emailTrimmed, password);
+      toast("Signed in successfully!", "success");
       router.push("/bookings");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      const errMsg = err instanceof Error ? err.message : "Login failed";
+      setError(errMsg);
+      toast(errMsg, "error");
     } finally {
       setBusy(false);
     }

@@ -2,9 +2,13 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { bookingApi, BookingDto, RouteDto, PagedResult } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 
 export default function BookingsPage() {
+  const { user, openAuthModal } = useAuth();
+  const router = useRouter();
   const [result, setResult] = useState<PagedResult<BookingDto> | null>(null);
   const [routes, setRoutes] = useState<RouteDto[]>([]);
   const [search, setSearch] = useState("");
@@ -12,6 +16,15 @@ export default function BookingsPage() {
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
+
+  const handleAddBookingClick = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      openAuthModal("login", () => {
+        router.push("/bookings/new");
+      });
+    }
+  };
 
   const load = useCallback(() => {
     bookingApi
@@ -32,10 +45,15 @@ export default function BookingsPage() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Bookings</h1>
-        <Link href="/bookings/new" className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700">
+        <Link
+          href="/bookings/new"
+          onClick={handleAddBookingClick}
+          className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700"
+        >
           + Add Booking
         </Link>
       </div>
+
 
       {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error} - is the Booking Service running on :5011?</div>}
 

@@ -1,7 +1,7 @@
 import { authHeader } from "@/lib/auth";
 
 const BOOKING_API = process.env.NEXT_PUBLIC_BOOKING_API_URL ?? "http://localhost:5011";
-const ANALYTICS_API = process.env.NEXT_PUBLIC_ANALYTICS_API_URL ?? "http://localhost:5021";
+const ANALYTICS_API = process.env.NEXT_PUBLIC_ANALYTICS_API_URL || BOOKING_API;
 
 export type SpecialRequestDto = { id: number; type: number; details: string | null };
 export type SpecialRequestInput = { type: number; details: string | null };

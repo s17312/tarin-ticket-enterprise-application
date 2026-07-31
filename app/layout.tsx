@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { ToastProvider } from "@/context/ToastContext";
 import NavBar from "@/components/NavBar";
 
 const geistSans = Geist({
@@ -30,14 +31,17 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
-        <AuthProvider>
-          <NavBar />
-          <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-6">{children}</main>
-          <footer className="bg-violet-900 text-violet-100 text-sm text-center py-3">
-            CW2 - Enterprise microservices client (Next.js) calling Booking Service and Analytics &amp; Prediction Service over REST
-          </footer>
-        </AuthProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <NavBar />
+            <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-6">{children}</main>
+            <footer className="bg-violet-900 text-violet-100 text-sm text-center py-3">
+              CW2 - Enterprise microservices client (Next.js) calling Booking Service and Analytics &amp; Prediction Service over REST
+            </footer>
+          </AuthProvider>
+        </ToastProvider>
       </body>
     </html>
   );
 }
+
