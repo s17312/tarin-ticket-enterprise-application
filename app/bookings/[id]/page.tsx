@@ -156,18 +156,18 @@ export default function BookingDetailsPage() {
       )}
       {user && !canManage && <p className="text-sm text-slate-500 mb-3">This booking belongs to another user, so you can only view it.</p>}
 
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         {canManage && booking.status === "Confirmed" && (
-          <button onClick={handleCancel} disabled={busy} className="px-4 py-2 border border-amber-400 text-amber-700 rounded hover:bg-amber-50 cursor-pointer transition">
+          <button onClick={handleCancel} disabled={busy} className="w-full sm:w-auto text-center px-4 py-2 border border-amber-400 text-amber-700 rounded-lg hover:bg-amber-50 cursor-pointer transition font-medium">
             Cancel Booking
           </button>
         )}
         {canManage && (
-          <button onClick={handleDelete} disabled={busy} className="px-4 py-2 border border-red-400 text-red-700 rounded hover:bg-red-50 cursor-pointer transition">
+          <button onClick={handleDelete} disabled={busy} className="w-full sm:w-auto text-center px-4 py-2 border border-red-400 text-red-700 rounded-lg hover:bg-red-50 cursor-pointer transition font-medium">
             Delete
           </button>
         )}
-        <Link href="/bookings" className="px-4 py-2 border rounded hover:bg-slate-50 transition">
+        <Link href="/bookings" className="w-full sm:w-auto text-center px-4 py-2 border rounded-lg hover:bg-slate-50 transition font-medium">
           Back to list
         </Link>
       </div>

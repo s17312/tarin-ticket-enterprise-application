@@ -123,14 +123,14 @@ export default function Home() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-2 text-violet-900">Train Ticket Reservation &amp; Management</h1>
+      <h1 className="text-3xl font-bold mb-4 text-violet-900 text-center sm:text-left">Train Ticket Reservation &amp; Management</h1>
       <div className="grid md:grid-cols-2 gap-6">
         {cards.map((c) => (
           <Link
             key={c.href}
             href={c.href}
             onClick={(e) => handleCardClick(e, c.href, c.requiresAuth)}
-            className="flex items-center gap-5 rounded-2xl border border-violet-100 bg-white p-5 shadow-sm hover:shadow-lg hover:border-violet-200 hover:-translate-y-0.5 transition-all duration-200 min-h-[160px] w-full group"
+            className="flex flex-col sm:flex-row items-center sm:items-start gap-5 rounded-2xl border border-violet-100 bg-white p-5 shadow-sm hover:shadow-lg hover:border-violet-200 hover:-translate-y-0.5 transition-all duration-200 min-h-[160px] w-full group text-center sm:text-left"
           >
             {/* Left side: Themed Comic SVG Badge */}
             <div className="w-24 h-24 shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
@@ -138,7 +138,7 @@ export default function Home() {
             </div>
 
             {/* Right side: Title & Description */}
-            <div className="flex-1 flex flex-col justify-center">
+            <div className="flex-1 flex flex-col justify-center items-center sm:items-start">
               <h2 className="font-bold text-lg text-violet-800 mb-1 group-hover:text-violet-900 transition-colors leading-snug">{c.title}</h2>
               <p className="text-sm text-slate-500 leading-normal">{c.desc}</p>
             </div>

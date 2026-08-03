@@ -251,15 +251,18 @@ export default function NewBookingPage() {
         <div className="border-t pt-4">
           <h3 className="font-medium mb-2">Special requests (optional)</h3>
           {SPECIAL_REQUEST_LABELS.map((label, i) => (
-            <div key={label} className="flex items-center gap-2 mb-2">
+            <div key={label} className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3 border-b border-slate-50 pb-2 sm:pb-0 sm:border-0">
+              <div className="flex items-center gap-2 shrink-0 sm:w-48">
+                <input
+                  type="checkbox"
+                  checked={specialRequests[i]}
+                  onChange={(e) => setSpecialRequests((prev) => prev.map((v, idx) => (idx === i ? e.target.checked : v)))}
+                  className="rounded text-violet-600 focus:ring-violet-500 w-4 h-4"
+                />
+                <span className="text-sm font-medium text-slate-700">{label}</span>
+              </div>
               <input
-                type="checkbox"
-                checked={specialRequests[i]}
-                onChange={(e) => setSpecialRequests((prev) => prev.map((v, idx) => (idx === i ? e.target.checked : v)))}
-              />
-              <span className="w-40 text-sm">{label}</span>
-              <input
-                className="border rounded px-2 py-1 flex-1 text-sm"
+                className="border rounded px-2 py-1.5 flex-1 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 transition"
                 placeholder="Details (optional)"
                 value={specialRequestDetails[i]}
                 onChange={(e) => setSpecialRequestDetails((prev) => prev.map((v, idx) => (idx === i ? e.target.value : v)))}
@@ -268,7 +271,7 @@ export default function NewBookingPage() {
           ))}
         </div>
 
-        <button type="submit" disabled={submitting} className="bg-violet-600 text-white px-5 py-2 rounded hover:bg-violet-700 disabled:opacity-50">
+        <button type="submit" disabled={submitting} className="w-full sm:w-auto bg-violet-600 text-white px-5 py-2.5 rounded hover:bg-violet-700 disabled:opacity-50 font-semibold cursor-pointer">
           {submitting ? "Adding..." : "Add Booking"}
         </button>
       </form>

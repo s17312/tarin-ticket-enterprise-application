@@ -56,7 +56,7 @@ export default function PredictPage() {
       </div>
 
       <form onSubmit={handleAsk} className="grid sm:grid-cols-3 gap-3">
-        <select required className="border rounded px-2 py-2" value={routeId} onChange={(e) => setRouteId(e.target.value)}>
+        <select required className="border rounded-lg px-3 py-2.5 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 transition bg-white" value={routeId} onChange={(e) => setRouteId(e.target.value)}>
           <option value="">-- Select route --</option>
           {routes.map((r) => (
             <option key={r.id} value={r.id}>
@@ -64,8 +64,8 @@ export default function PredictPage() {
             </option>
           ))}
         </select>
-        <input type="date" required className="border rounded px-2 py-2" value={travelDate} onChange={(e) => setTravelDate(e.target.value)} />
-        <button type="submit" disabled={asking} className="bg-violet-600 text-white rounded px-4 py-2 hover:bg-violet-700 disabled:opacity-50">
+        <input type="date" required className="border rounded-lg px-3 py-2.5 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100 transition bg-white" value={travelDate} onChange={(e) => setTravelDate(e.target.value)} />
+        <button type="submit" disabled={asking} className="bg-violet-600 text-white rounded-lg px-4 py-2.5 font-semibold hover:bg-violet-700 disabled:opacity-50 cursor-pointer shadow-sm active:scale-[0.98] transition-all">
           {asking ? "Asking..." : "Ask"}
         </button>
       </form>

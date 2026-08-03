@@ -26,17 +26,17 @@ export default function ReportsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
         <h1 className="text-2xl font-bold">Weekly View &amp; Report</h1>
         {report && (
-          <div className="flex gap-2">
-            <button onClick={() => setWeek(addDays(report.weekStart, -7))} className="px-3 py-1 border rounded">
+          <div className="flex gap-2 w-full sm:w-auto justify-between sm:justify-start flex-wrap">
+            <button onClick={() => setWeek(addDays(report.weekStart, -7))} className="flex-1 sm:flex-none text-center px-3 py-1.5 border rounded-lg text-sm bg-white hover:bg-slate-50 cursor-pointer active:scale-95 transition-all">
               ← Previous week
             </button>
-            <button onClick={() => setWeek(undefined)} className="px-3 py-1 border rounded">
+            <button onClick={() => setWeek(undefined)} className="flex-1 sm:flex-none text-center px-3 py-1.5 border rounded-lg text-sm bg-white hover:bg-slate-50 cursor-pointer active:scale-95 transition-all">
               This week
             </button>
-            <button onClick={() => setWeek(addDays(report.weekStart, 7))} className="px-3 py-1 border rounded">
+            <button onClick={() => setWeek(addDays(report.weekStart, 7))} className="flex-1 sm:flex-none text-center px-3 py-1.5 border rounded-lg text-sm bg-white hover:bg-slate-50 cursor-pointer active:scale-95 transition-all">
               Next week →
             </button>
           </div>
@@ -78,32 +78,56 @@ export default function ReportsPage() {
                 {day.bookings.length === 0 ? (
                   <p className="text-slate-400 text-sm">No bookings.</p>
                 ) : (
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="text-left text-slate-500">
-                        <th className="pb-1">Route</th>
-                        <th className="pb-1">Time</th>
-                        <th className="pb-1">Seat</th>
-                        <th className="pb-1">Fare</th>
-                        <th className="pb-1">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <>
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-left text-slate-500">
+                            <th className="pb-1">Route</th>
+                            <th className="pb-1">Time</th>
+                            <th className="pb-1">Seat</th>
+                            <th className="pb-1">Fare</th>
+                            <th className="pb-1">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {day.bookings.map((b) => (
+                            <tr key={b.id} className="border-t">
+                              <td className="py-1">{b.routeDisplayName}</td>
+                              <td className="py-1">{b.departureTime.slice(0, 5)}</td>
+                              <td className="py-1">{b.seatNumber}</td>
+                              <td className="py-1">£{b.farePrice.toFixed(2)}</td>
+                              <td className="py-1">
+                                <span className={`px-2 py-0.5 rounded text-xs text-white ${b.status === "Confirmed" ? "bg-green-600" : "bg-slate-500"}`}>
+                                  {b.status}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile List View */}
+                    <div className="md:hidden space-y-2">
                       {day.bookings.map((b) => (
-                        <tr key={b.id} className="border-t">
-                          <td className="py-1">{b.routeDisplayName}</td>
-                          <td className="py-1">{b.departureTime.slice(0, 5)}</td>
-                          <td className="py-1">{b.seatNumber}</td>
-                          <td className="py-1">£{b.farePrice.toFixed(2)}</td>
-                          <td className="py-1">
-                            <span className={`px-2 py-0.5 rounded text-xs text-white ${b.status === "Confirmed" ? "bg-green-600" : "bg-slate-500"}`}>
+                        <div key={b.id} className="bg-slate-50 rounded-lg p-3 text-sm border border-slate-100 flex flex-col gap-1.5">
+                          <div className="flex justify-between items-start gap-1">
+                            <span className="font-semibold text-slate-800 leading-snug">{b.routeDisplayName}</span>
+                            <span className={`px-2 py-0.5 rounded text-[10px] text-white font-medium shrink-0 ${b.status === "Confirmed" ? "bg-green-600" : "bg-slate-500"}`}>
                               {b.status}
                             </span>
-                          </td>
-                        </tr>
+                          </div>
+                          <div className="flex justify-between items-center text-xs text-slate-500">
+                            <span>Departs: <strong className="text-slate-700">{b.departureTime.slice(0, 5)}</strong></span>
+                            <span>Seat: <strong className="text-slate-700">{b.seatNumber}</strong></span>
+                            <span>Fare: <strong className="text-slate-700">£{b.farePrice.toFixed(2)}</strong></span>
+                          </div>
+                        </div>
                       ))}
-                    </tbody>
-                  </table>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
